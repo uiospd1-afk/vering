@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Func Hub - คลังความรู้เรื่องฟังก์ชันแบบละเอียด</title>
+    <!-- Google Fonts: Prompt & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f7fbff;
+            --card-bg: #ffffff;
+            --primary-blue: #4a90e2;
+            --light-blue: #e3f2fd;
+            --accent-pink: #ff80bf;
+            --light-pink: #ffe6f2;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(74, 144, 226, 0.08), 0 8px 10px -6px rgba(255, 128, 191, 0.05);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Prompt', 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Layout หลัก */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .brand {
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--light-blue), var(--light-pink));
+        }
+
+        .brand i {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+        }
+
+        .brand h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 1.5rem 1rem;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            transform: translateX(4px);
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--primary-blue), #6bb1ff);
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Main Content Area */
+        main {
+            flex-grow: 1;
+            margin-left: 280px;
+            padding: 2.5rem;
+            max-width: calc(100% - 280px);
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        /* Pages (Tab Content) */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Components Styling */
+        h1 {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        h1 span {
+            color: var(--accent-pink);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 30px -5px rgba(255, 128, 191, 0.12);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--light-blue), var(--light-pink));
+            border-left: 5px solid var(--primary-blue);
+            padding: 1.5rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin: 1.5rem 0;
+        }
+
+        /* Interactive Playground / Test Form */
+        .interactive-box {
+            background: #fff;
+            border: 2px dashed var(--primary-blue);
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        input, select {
+            padding: 10px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            margin: 5px;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-blue), #6bb1ff);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .result-display {
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--accent-pink);
+            font-size: 1.1rem;
+        }
+
+        /* References Footer inside pages */
+        .references {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .references ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .references a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            aside {
+                transform: translateX(-100%);
+            }
+            aside.mobile-open {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 1.5rem;
+                padding-top: 5rem;
+            }
+            .mobile-header {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-infinity" style="color:var(--primary-blue); font-size: 1.5rem;"></i>
+                <span style="font-weight:700; color:var(--text-main);">Math Func Hub</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-infinity"></i>
+                <h2>Math Func Hub</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item active" data-target="page-home"><i class="fa-solid fa-house"></i> หน้าแรกและบทนำ</a></li>
+                <li><a href="#" class="nav-item" data-target="page-definition"><i class="fa-solid fa-book-open"></i> ความหมายและวิธีเช็ค</a></li>
+                <li><a href="#" class="nav-item" data-target="page-types"><i class="fa-solid fa-shapes"></i> ประเภทของฟังก์ชัน</a></li>
+                <li><a href="#" class="nav-item" data-target="page-domain"><i class="fa-solid fa-chart-line"></i> โดเมนและเรนจ์</a></li>
+                <li><a href="#" class="nav-item" data-target="page-playground"><i class="fa-solid fa-laptop-code"></i> ทดลองคำนวณ (Lab)</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main>
+            <!-- PAGE 1: หน้าแรกและบทนำ -->
+            <section id="page-home" class="page-section active-page">
+                <h1>ยินดีต้อนรับสู่โลกของ <span>"ฟังก์ชัน"</span></h1>
+                <p class="subtitle">แหล่งเรียนรู้คณิตศาสตร์ระดับมัธยมปลาย สไตล์มินิมอล สบายตา และเข้าใจง่าย</p>
+                
+                <div class="card">
+                    <h2><i class="fa-solid fa-compass" style="color:var(--primary-blue);"></i> ฟังก์ชันคืออะไรในชีวิตประจำวัน?</h2>
+                    <p style="margin-top: 1rem;">ในชีวิตประจำวันเรามักเจอความสัมพันธ์ที่มีลักษณะ "input เข้าไป แล้วได้ output ออกมาเพียงค่าเดียวเสมอ" เช่น การหยอดเหรียญซื้อน้ำ เครื่องจะจ่ายน้ำอัดลมออกมา 1 กระป๋องแน่นอน หรือการกดเครื่องคิดเลขป้อนค่า $x$ เข้าไป เครื่องจะคำนวณและแสดงผลลัพธ์ $y$ ออกมาค่าเดียว สิ่งนี้แหละคือคอนเซปต์หลักของ **"ฟังก์ชัน (Function)"**</p>
+                    
+                    <div class="highlight-box">
+                        <p><strong>เป้าหมายของเว็บไซต์นี้:</strong> รวบรวมเนื้อหา ทฤษฎี บทนิยาม ตัวอย่าง และระบบทดลองจำลองเชิงโต้ตอบ เพื่อให้ผู้เรียนสามารถทำความเข้าใจเรื่องฟังก์ชันได้อย่างรวดเร็วและเป็นระบบระเบียบ</p>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3><i class="fa-solid fa-bullseye" style="color:var(--accent-pink);"></i> เนื้อหาครอบคลุมอะไรบ้าง?</h3>
+                        <ul style="margin-top: 10px; margin-left: 20px; color: var(--text-muted);">
+                            <li>นิยามทางคณิตศาสตร์ที่ถูกต้องแม่นยำ</li>
+                            <li>เทคนิคการตรวจสอบความสัมพันธ์ที่เป็นฟังก์ชัน</li>
+                            <li>ประเภทฟังก์ชันสำคัญ (เชิงเส้น, กำลังสอง, เอกซ์โพเนนเชียล ฯลฯ)</li>
+                            <li>โดเมน (Domain) และเรนจ์ (Range)</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa-solid fa-hands-clapping" style="color:var(--primary-blue);"></i> ออกแบบเพื่อการเรียนรู้</h3>
+                        <p style="margin-top: 10px; color: var(--text-muted);">ด้วยโทนสีฟ้า-ขาว-ชมพู สบายตา ไม่มีโฆษณาคั่น พร้อมเครื่องมือจำลองคำนวณสด ๆ ให้คุณได้ลองผิดลองถูกด้วยตัวเอง</p>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>สถาบันส่งเสริมการสอนวิทยาศาสตร์และเทคโนโลยี (สสวท.), คลังความรู้ SciMath: <a href="https://www.scimath.org" target="_blank">www.scimath.org</a></li>
+                        <li>วิกิพีเดีย สารานุกรมเสรี, หัวข้อ "ฟังก์ชัน (คณิตศาสตร์)": <a href="https://th.wikipedia.org/wiki/ฟังก์ชัน_(คณิตศาสตร์)" target="_blank">Wikipedia ฟังก์ชัน</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PAGE 2: ความหมายและวิธีเช็ค -->
+            <section id="page-definition" class="page-section">
+                <h1>ความหมายและ <span>วิธีตรวจสอบฟังก์ชัน</span></h1>
+                <p class="subtitle">นิยามเชิงคณิตศาสตร์และ 3 วิธีเช็คว่าความสัมพันธ์นั้นเป็นฟังก์ชันหรือไม่</p>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-book" style="color:var(--primary-blue);"></i> บทนิยามอย่างเป็นทางการ</h2>
+                    <p style="margin-top: 1rem;">
+                        <strong>ฟังก์ชัน (Function)</strong> คือ ความสัมพันธ์ซึ่งในสองคู่อันดับใดๆ ของความสัมพันธ์นั้น ถ้ามีสมาชิกตัวหน้าเท่ากันแล้ว สมาชิกตัวหลังต้องไม่ต่างกัน กล่าวคือ <em>"สมาชิกตัวหน้าแต่ละตัวจับคู่กับสมาชิกตัวหลังเพียงตัวเดียวเท่านั้น"</em>
+                    </p>
+                    <p style="margin-top: 10px;">เขียนแทนด้วยสัญลักษณ์: $f: A \to B$ หรือ $y = f(x)$ โดยที่ $x \in A$ และ $y \in B$</p>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-list-check" style="color:var(--accent-pink);"></i> 3 วิธีหลักในการตรวจสอบฟังก์ชัน</h2>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 5px;">1. กรณีแจกแจงสมาชิก (Set of Ordered Pairs)</h3>
+                        <p style="color: var(--text-muted);">ดูว่าสมาชิกตัวหน้าของคู่อันดับ **"ห้ามซ้ำกัน"** หากตัวหน้าซ้ำแต่ตัวหลังต่างกัน จะไม่เป็นฟังก์ชันเด็ดขาด</p>
+                        <div class="highlight-box" style="margin: 10px 0;">
+                            <p>✅ <code>{(1,2), (2,3), (3,4)}</code> เป็นฟังก์ชัน (ตัวหน้า 1, 2, 3 ไม่ซ้ำกัน)</p>
+                            <p>❌ <code>{(1,2), (1,5), (3,4)}</code> ไม่เป็นฟังก์ชัน (ตัวหน้าเลข 1 ซ้ำ แต่ตัวหลังเป็น 2 กับ 5)</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 5px;">2. กรณีบอกเงื่อนไข (Condition Equation)</h3>
+                        <p style="color: var(--text-muted);">แทนค่า $x$ ลงในสมการ ถ้ามีค่า $x$ ใดตัวหนึ่งให้ค่า $y$ ออกมามากกว่า 1 ค่า แปลว่าความสัมพันธ์นั้น **ไม่เป็นฟังก์ชัน**</p>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 5px;">3. การทดสอบด้วยกราฟ (Vertical Line Test)</h3>
+                        <p style="color: var(--text-muted);">ลากเส้นตรงขนานกับแกน $Y$ ตัดกราฟ ถ้ามีเส้นตรงเส้นใดตัดกราฟมากกว่า 1 จุด แสดงว่าความสัมพันธ์นั้น **ไม่เป็นฟังก์ชัน**</p>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>TutorMaster, สรุปความหมายฟังก์ชัน ม.4: <a href="https://tuemaster.com" target="_blank">Tuemaster Blog</a></li>
+                        <li>SmartMathPro, บทความความสัมพันธ์และฟังก์ชัน: <a href="https://www.smartmathpro.com" target="_blank">SmartMathPro</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PAGE 3: ประเภทของฟังก์ชัน -->
+            <section id="page-types" class="page-section">
+                <h1>ประเภทของ <span>ฟังก์ชันคณิตศาสตร์</span></h1>
+                <p class="subtitle">ทำความรู้จักฟังก์ชันพื้นฐานที่พบบ่อยในการศึกษาต่อระดับสูง</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3><i class="fa-solid fa-arrow-trend-up" style="color:var(--primary-blue);"></i> 1. ฟังก์ชันเชิงเส้น (Linear Function)</h3>
+                        <p style="margin-top: 10px; color: var::text-muted;">อยู่ในรูป $f(x) = mx + c$ เมื่อ $m, c$ เป็นจำนวนจริง กราฟที่ได้จะเป็นเส้นตรง</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">ตัวอย่าง: $f(x) = 2x + 1$</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-chart-area" style="color:var(--accent-pink);"></i> 2. ฟังก์ชันกำลังสอง (Quadratic Function)</h3>
+                        <p style="margin-top: 10px; color: var(--text-muted);">อยู่ในรูป $f(x) = ax^2 + bx + c$ เมื่อ $a \neq 0$ กราฟจะมีลักษณะเป็นรูปพาราโบลา</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">ตัวอย่าง: $f(x) = x^2 - 4x + 3$</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-bolt" style="color:var(--primary-blue);"></i> 3. ฟังก์ชันเอ็กซ์โพเนนเชียล (Exponential)</h3>
+                        <p style="margin-top: 10px; color: var(--text-muted);">อยู่ในรูป $f(x) = a^x$ โดยที่ $a > 0$ และ $a \neq 1$ ใช้จำลองการเติบโตหรือการสลายตัว</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-wave-square" style="color:var(--accent-pink);"></i> 4. ฟังก์ชันตรีโกณมิติ (Trigonometric)</h3>
+                        <p style="margin-top: 10px; color: var(--text-muted);">เช่น $f(x) = \sin(x), \cos(x), \tan(x)$ ลักษณะกราฟจะเป็นคลื่นซ้ำรอยเดิมเป็นช่วงๆ</p>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>CSCA Math Glossary, ประเภทฟังก์ชันพื้นฐาน: <a href="https://csca.app" target="_blank">CSCA Math</a></li>
+                        <li>Wikipedia, ฟังก์ชันคณิตศาสตร์: <a href="https://th.wikipedia.org" target="_blank">Wikipedia</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PAGE 4: โดเมนและเรนจ์ -->
+            <section id="page-domain" class="page-section">
+                <h1>โดเมนและ <span>เรนจ์ของฟังก์ชัน</span></h1>
+                <p class="subtitle">หัวใจสำคัญของการพิจารณาขอบเขตค่าตัวเลขเข้าและออก</p>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-circle-nodes" style="color:var(--primary-blue);"></i> ขอบเขต Domain & Range</h2>
+                    <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--text-muted);">
+                        <li><strong>โดเมน ($D_f$):</strong> เซตของค่าอินพุตหรือตัวแปร $x$ ทั้งหมดที่เป็นไปได้ ซึ่งทำให้ฟังก์ชันหาค่าได้จริง</li>
+                        <li><strong>เรนจ์ ($R_f$):</strong> เซตของค่าเอาต์พุตหรือตัวแปร $y$ ทั้งหมดที่เกิดขึ้นจากผลลัพธ์ของฟังก์ชัน</li>
+                    </ul>
+
+                    <div class="highlight-box" style="margin-top: 1.5rem;">
+                        <p>💡 <strong>เทคนิคการหาโดเมน:</strong> จัดรูปให้ $y$ อยู่ในเทอมของ $x$ แล้วมองว่า $x$ ห้ามทำให้ส่วนเป็นศูนย์ ($0$) หรือค่าในรูทติดลบ</p>
+                        <p style="margin-top: 5px;">💡 <strong>เทคนิคการหาเรนจ์:</strong> จัดรูปให้ $x$ อยู่ในเทอมของ $y$ แล้วพิจารณาค่า $y$ ที่เป็นไปได้</p>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>คลังความรู้ SciMath สสวท.: <a href="https://www.scimath.org" target="_blank">SciMath</a></li>
+               <!-- PAGE 4: โดเมนและเรนจ์ -->
+            <section id="page-domain" class="page-section">
+                <h1>โดเมนและ <span>เรนจ์ของฟังก์ชัน</span></h1>
+                <p class="subtitle">หัวใจสำคัญของการพิจารณาขอบเขตค่าตัวเลขเข้าและออก</p>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-circle-nodes" style="color:var(--primary-blue);"></i> ขอบเขต Domain & Range</h2>
+                    <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--text-muted);">
+                        <li><strong>โดเมน ($D_f$):</strong> เซตของค่าอินพุตหรือตัวแปร $x$ ทั้งหมดที่เป็นไปได้ ซึ่งทำให้ฟังก์ชันหาค่าได้จริง</li>
+                        <li><strong>เรนจ์ ($R_f$):</strong> เซตของค่าเอาต์พุตหรือตัวแปร $y$ ทั้งหมดที่เกิดขึ้นจากผลลัพธ์ของฟังก์ชัน</li>
+                    </ul>
+
+                    <div class="highlight-box" style="margin-top: 1.5rem;">
+                        <p>💡 <strong>เทคนิคการหาโดเมน:</strong> จัดรูปให้ $y$ อยู่ในเทอมของ $x$ แล้วมองว่า $x$ ห้ามทำให้ส่วนเป็นศูนย์ ($0$) หรือค่าในรูทติดลบ</p>
+                        <p style="margin-top: 5px;">💡 <strong>เทคนิคการหาเรนจ์:</strong> จัดรูปให้ $x$ อยู่ในเทอมของ $y$ แล้วพิจารณาค่า $y$ ที่เป็นไปได้</p>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>คลังความรู้ SciMath สสวท.: <a href="https://www.scimath.org" target="_blank">SciMath</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PAGE 5: ทดลองคำนวณ Lab -->
+            <section id="page-playground" class="page-section">
+                <h1>ทดลองคำนวณฟังก์ชัน <span>(Interactive Lab)</span></h1>
+                <p class="subtitle">สนุกกับการทดสอบป้อนค่า $x$ เพื่อดูผลลัพธ์ $f(x)$ จากฟังก์ชันจำลอง</p>
+
+                <div class="card">
+                    <h2><i class="fa-solid fa-calculator" style="color:var(--primary-blue);"></i> เครื่องคำนวณฟังก์ชันจำลอง</h2>
+                    <p style="margin-top: 10px; color: var(--text-muted);">เลือกรูปแบบฟังก์ชันที่คุณต้องการทดสอบ แล้วใส่ตัวเลข $x$ ลงไป:</p>
+                    
+                    <div class="interactive-box">
+                        <div style="margin-bottom: 1rem;">
+                            <label for="funcSelect" style="font-weight:600;">เลือกฟังก์ชัน:</label>
+                            <select id="funcSelect">
+                                <option value="linear">f(x) = 2x + 3 (เชิงเส้น)</option>
+                                <option value="quad">f(x) = x² - 4 (กำลังสอง)</option>
+                                <option value="cube">f(x) = x³ (ยกกำลังสาม)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="inputX" style="font-weight:600;">ใส่ค่า x:</label>
+                            <input type="number" id="inputX" value="2" style="width: 100px; text-align: center;">
+                        </div>
+                        <button class="btn" id="calculateBtn" style="margin-top: 1rem;"><i class="fa-solid fa-play"></i> คำนวณผลลัพธ์</button>
+                        
+                        <div class="result-display" id="calcResult">
+                            ผลลัพธ์: f(2) = 7
+                        </div>
+                    </div>
+                </div>
+
+                <div class="references">
+                    <strong>แหล่งอ้างอิงข้อมูล:</strong>
+                    <ul>
+                        <li>ออกแบบระบบการเรียนรู้ออนไลน์ด้วย JavaScript พื้นฐานตามหลักคณิตศาสตร์มัธยมปลาย</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript สำหรับควบคุมระบบ Multi-Page & Interactive -->
+    <script>
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page-section');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = item.getAttribute('data-target');
+
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                pages.forEach(page => {
+                    page.classList.remove('active-page');
+                    if(page.id === targetId) {
+                        page.classList.add('active-page');
+                    }
+                });
+
+                if(window.innerWidth <= 992) {
+                    sidebar.classList.remove('mobile-open');
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+        });
+
+        const calculateBtn = document.getElementById('calculateBtn');
+        const funcSelect = document.getElementById('funcSelect');
+        const inputX = document.getElementById('inputX');
+        const calcResult = document.getElementById('calcResult');
+
+        calculateBtn.addEventListener('click', () => {
+            let x = parseFloat(inputX.value);
+            if(isNaN(x)) {
+                calcResult.innerHTML = "❌ กรุณากรอกตัวเลขที่ถูกต้อง!";
+                return;
+            }
+
+            let type = funcSelect.value;
+            let result = 0;
+            let formulaName = "";
+
+            if(type === 'linear') {
+                result = (2 * x) + 3;
+                formulaName = `f(x) = 2(${x}) + 3`;
+            } else if(type === 'quad') {
+                result = (x * x) - 4;
+                formulaName = `f(x) = (${x})² - 4`;
+            } else if(type === 'cube') {
+                result = Math.pow(x, 3);
+                formulaName = `f(x) = (${x})³`;
+            }
+
+            calcResult.innerHTML = `✨ คำนวณจาก ${formulaName} = <strong>${result}</strong>`;
+        });
+    </script>
+</body>
+            </html>
+              
